@@ -64,6 +64,8 @@ x outside non-rejection region due to chance. **Type I - a** | x correctly outsi
 # Inference
 
 ## Confidence Interval
+<img src="Images/CI.PNG" width="200">
+
 * When estimating a population parameter using a sample statistic it's never going to be perfect. _Express that error using Interval Estimate_.
 * Randomness lies in the element choosen from the sample
 * Proportion of Samples _size n_ for which our estimate the _sample mean_ is within a certain distance +_ of the true population mean. **NOT** the probability that the population mean lies within the interval
