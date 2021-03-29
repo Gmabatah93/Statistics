@@ -71,4 +71,8 @@ x outside non-rejection region due to chance. **Type I - a** | x correctly outsi
 
 ## Single Sample
 
+z-test (x) | z-test (p)
+--- | ---
+<img src="Images/ztestx.PNG" width="100"> | <img src="Images/ztestp.PNG" width="100">
+
 ## Two Population
