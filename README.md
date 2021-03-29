@@ -1,6 +1,6 @@
 # Experimental Design
 ### Principals
->* **Control**: compare treatment to control group
+* **Control**: compare treatment to control group
 * **Replicate**: large Sample or Replicate
 * **Randomize**: Randomly assign subjects to treatments
 * **Block**: Covariance Analysis
@@ -20,17 +20,17 @@
 > If Sampling of sample size **n** is RANDOM, then the sample is UNBIASED & REPRESENTATIVE of the population. \
 Thus, any results based on the sample can GENERALIZE to the population parameter
 
-> **Simple Random Sample**:\
+**Simple Random Sample**:\
 **Stratified Sample**:\
 **Clustered Sample**:\
 **Multistage Sample**:
 
->**Bootstrap**: Sampling with Replacement. *mimics Sampling Distribution using a single sample*\
+**Bootstrap**: Sampling with Replacement. *mimics Sampling Distribution using a single sample*\
 **Permutation**: Sampling without Replacement. _shuffled dataset assuming Null is true_
 
 
 ### Testing Procedure
->1. Well Developed, Clear Research Problem
+1. Well Developed, Clear Research Problem
 2. Establish Null
 3. Determine Appropriate Statistical Test & Sampling Distribution
 4. Choose Type I Error rate "alpha"
@@ -62,3 +62,13 @@ x outside non-rejection region due to chance. **Type I - a** | x correctly outsi
 ---
 
 # Inference
+
+## Confidence Interval
+* When estimating a population parameter using a sample statistic it's never going to be perfect. _Express that error using Interval Estimate_.
+* Randomness lies in the element choosen from the sample
+* Proportion of Samples _size n_ for which our estimate the _sample mean_ is within a certain distance +_ of the true population mean. **NOT** the probability that the population mean lies within the interval
+* _"95% of all intervals made using **Point Estimate + "minus" ME** will contain the population parameter"_
+
+## Single Sample
+
+## Two Population
