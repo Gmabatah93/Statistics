@@ -133,3 +133,80 @@ hsb_diff_boot <- hsb2_diff %>%
 # pvalue
 hsb_diff_boot %>% visualise(obs_stat = hsb_median, direction = "both")
 hsb_diff_boot %>% get_p_value(obs_stat = hsb_median, direction = "both")
+
+
+
+
+# Does a treatment using embryonic stem cells help improve heart function following a heart attack more so than tradional therapy ?
+# Is there a difference between the mean heart pumping capacities of sheep's hearts in the control and treatment groups ?
+
+# Data
+stem <- openintro::stem_cell
+stem_diff <- stem %>% mutate(change = after - before)
+# - obs mean
+diff_mean <- stem_diff %>% group_by(trmt) %>% 
+  summarize(change = mean(change)) %>% 
+  summarize(diff = diff(change)) %>%
+  pull
+# 1,000 different means via randomization (Sampling Distribution)
+stem_diff_perm <- stem_diff %>% 
+  specify(change ~ trmt) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("esc", "ctrl"))
+# p value
+stem_diff_perm %>% visualise(obs_stat = diff_mean, direction = "both")
+stem_diff_perm %>% get_p_value(obs_stat = diff_mean, direction = "both")
+
+
+
+# The state of NC released to the public a large dataset containing information on births recorded in this state. 
+# The dataset has been of interest to medical researchers studying the relation between habits and practices of expectant mothers and the birth of their children. 
+
+# Data
+ncbirths <- openintro::ncbirths
+# - clean: NAs
+ncbirths_complete <- ncbirths %>% filter(!is.na(visits))
+# - observed difference in means
+births_diff_means <- ncbirths_complete %>% 
+  group_by(habit) %>% 
+  summarize(mean_weight = mean(weight)) %>% 
+  pull() %>% diff()
+
+# 1,000 different means via randomization (Sampling Distribution)
+births_diff_perm <- ncbirths_complete %>% 
+  specify(weight ~ habit) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("nonsmoker","smoker"))
+# - p value
+births_diff_perm %>% visualise(obs_stat = births_diff_means, direction = "both")
+births_diff_perm %>% get_p_value(obs_stat = births_diff_means, direction = "both")
+
+# 1,500 bootstrap difference in means
+births_diff_boot <- ncbirths_complete %>% 
+  specify(weight ~ habit) %>% 
+  generate(reps = 1500, type = "bootstrap") %>% 
+  calculate(stat = "diff in means", order = c("nonsmoker","smoker"))
+# - confidence interval
+births_diff_boot %>% get_confidence_interval(level = 0.95, type = "percentile")
+
+
+
+# HOURS WORK vs. GENDER
+acs12 <- openintro::acs12
+acs_hrs <- acs12 %>% 
+  filter(!is.na(hrs_work), !is.na(gender)) %>% 
+  select(hrs_work, gender)
+# EDA
+ggplot(acs_hrs, aes(gender, hrs_work)) + geom_boxplot()
+obs_diff <- acs_hrs %>% 
+  group_by(gender) %>% 
+  summarize(mean_hrs = mean(hrs_work)) %>% 
+  summarize(obs_diff = diff(mean_hrs)) %>% pull
+# HYPOTHESIS-Unpaired(t)
+t.test(hrs_work ~ gender, data = acs_hrs)
+acs_hrs %>% 
+  t_test(formula = hrs_work ~ gender,
+         alternative = "two-sided",
+         mu = 0)
