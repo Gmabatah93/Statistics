@@ -210,3 +210,104 @@ acs_hrs %>%
   t_test(formula = hrs_work ~ gender,
          alternative = "two-sided",
          mu = 0)
+
+
+
+# CATEGORICAL: Single Parameter ----
+
+# Is their a difference btw Promotion rates by GENDER ?
+# Data
+promotions <- moderndive::promotions
+# EDA
+promotions %>% 
+  ggplot(aes(gender, fill = decision)) +
+  geom_bar()
+table(promotions$gender, promotions$decision)
+# - obs difference of promotion
+promo_diff <- promotions %>% 
+  specify(decision ~ gender, success = "promoted") %>% 
+  calculate(stat = "diff in props", order = c("female","male"))
+# Null Distribution
+promo_perm <- promotions %>% 
+  specify(decision ~ gender, success = "promoted") %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in props", order = c("female", "male"))
+promo_perm %>% visualise(bins = 10) +
+  shade_p_value(obs_stat = promo_diff, direction = "right")
+promo_perm %>% get_p_value(obs_stat = promo_diff, direction = "right")
+# Confidence Interval
+promo_boot <- promotions %>% 
+  specify(decision ~ gender, success = "promoted") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "diff in props", order = c("female", "male"))
+promo_boot %>% get_confidence_interval(point_estimate = promo_diff, level = 0.95, type = 'se')
+promo_boot %>% visualise() +
+  shade_confidence_interval(endpoints = c(0.0533, 0.530))
+# Conclusion
+# - We Reject the H0 with a 95% Confidence
+# - We are 95% Confidence that the difference in Promotion Rates is between [0.047, 0.536]
+
+
+# -- H0: Difference btw Home Ownership by Gender = 0
+raw <- NHANES::NHANES
+homes <- raw %>% select(Gender, HomeOwn) %>% 
+  filter(HomeOwn %in% c("Own", "Rent")) %>% droplevels()
+# eda
+homes %>% 
+  ggplot(aes(Gender, fill = HomeOwn)) +
+  geom_bar()
+homes %>% count(Gender, HomeOwn)
+table(homes$HomeOwn, homes$Gender) %>% prop.table(margin = 1) %>% round(2)
+# Hypothesis Test: Unpaired test 
+d_hat <- homes %>% 
+  specify(HomeOwn ~ Gender, success = "Own") %>% 
+  calculate(stat = "diff in props", order = c("male", "female"))
+null_perm <- homes %>% 
+  specify(HomeOwn ~ Gender, success = "Own") %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in props", order = c("male", "female"))
+null_perm %>% visualise() +
+  shade_p_value(obs_stat = d_hat, direction = "both")
+# Confidence Interval
+d_boot <- homes %>% 
+  specify(HomeOwn ~ Gender, success = "Own") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "diff in props", order = c("male","female"))
+d_boot %>% get_confidence_interval(point_estimate = d_hat, type = "se", level = 0.95)
+d_boot %>% visualise() + shade_confidence_interval(endpoints = c(-0.025, 0.0097))
+# Conclusion
+# - With a 95% confidence level we fail to reject H0
+# - With are 95% that the true prop lies between [-0.03,0.01]
+
+
+# -- General Social Survey -- 
+gss2014 <- gss %>% filter(year == 2014)
+
+# -- H0: The difference in College degree by Geder = 0
+gss2014_College <- gss2014 %>% select(sex, college)
+# eda
+gss2014_College %>% 
+  ggplot(aes(sex, fill = college)) + 
+  geom_bar(position = "fill")
+# Hypothesis Test: Unparied
+d_hat <- gss2014_College %>% 
+  specify(college ~ sex, success = "degree") %>% 
+  calculate(stat = "diff in props", order = c("male", "female"))
+null_perm <- gss2014_College %>% 
+  specify(college ~ sex, success = "degree") %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in props", order = c("male", "female"))
+null_perm %>% visualise() + shade_p_value(obs_stat = d_hat, direction = "both")
+null_perm %>% get_p_value(obs_stat = d_hat, direction = "both")
+# Confidence Interval
+p_boot <- gss2014_College %>% 
+  specify(college ~ sex, success = "degree") %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "diff in props", order = c("male","female"))
+p_boot %>% get_confidence_interval(point_estimate = d_hat, type = "se", level = .95)
+p_boot %>% visualise() + shade_ci(endpoints = c(0.032, 0.767))
+# Conclusion
+# - At the 95% Confidence Level we fail to Reject
