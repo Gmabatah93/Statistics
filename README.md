@@ -30,21 +30,22 @@ Thus, any results based on the sample can GENERALIZE to the population parameter
 
 
 ### Testing Procedure
-1. Well Developed, Clear Research Problem
-2. Establish Null
-3. Determine Appropriate Statistical Test & Sampling Distribution
-4. Choose Type I Error rate "alpha"
-5. State Decision Rule
-6. Gather Sample Data
-7. Calculate Test Statistic
-8. State Statistical Conclusion
-9. Make Decision of Inference Based on Conclusion
+
+> 1. Well Developed, Clear Research Problem or Question
+> 2. Establish Null and Alternative
+> 3. Determine Appropriate Statistical Test & Sampling Distribution
+> 4. Choose Type I Error rate "alpha"
+> 5. State Decision Rule
+> 6. Gather Sample Data
+> 7. Calculate Test Statistic
+> 8. State Statistical Conclusion
+> 9. Make Decision or Inference based on Conclusion
 
 ---
 
 # Hypothesis Testing
 > "Does our conclusion match the overall state of Reality"\
-"Did our sample come from the same population we assume is underlying the Null"
+"Did our sample come from the same population if we assume the Null is True"
 
 **Null**: Status Quo - Assumed - Given\
 **Alternative**: Claim - Assertion - Unknown
@@ -63,10 +64,12 @@ x outside non-rejection region due to chance. **Type I - a** | x correctly outsi
 
 # Inference
 
+Sampling Distribution: Central Limit Theorem, take multiple samples _(n > 30)_ & their means and it will approximate to a Normal Distribution  
+
 ## Confidence Interval
 * When estimating a population parameter using a sample statistic it's never going to be perfect. _Express that error using Interval Estimate_.
-* Randomness lies in the element choosen from the sample
-* Proportion of Samples _size n_ for which our estimate the _sample mean_ is within a certain distance +_ of the true population mean. **NOT** the probability that the population mean lies within the interval
+* Randomness lies in the elements chosen for the sample **NOT** the population mean.
+* Proportion of samples _size n_ for which our estimate the _sample mean_ is within a certain distance +_ of the true population mean. **NOT** the probability that the population mean lies within the interval
 * _"95% of all intervals made using <img src="Images/CI.PNG" width="100"> will contain the population parameter"_
 
 ## Single Sample
@@ -76,6 +79,12 @@ z-test (x) | z-test (p)
 <img src="Images/ztestx.PNG" width="100"> | <img src="Images/ztestp.PNG" width="100">
 
 ## Two Population
+
+z-test (Unpaired) | z-test (Paired)
+--- | ---
+<img src="Images/ztestunparied.PNG" width="100"> |
+
+
 
 ## Chi-Squared
 

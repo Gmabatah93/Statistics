@@ -3,7 +3,7 @@ library(dplyr)
 library(ggplot2)
 library(infer)
 
-# NUMERICAL INFERENCE: Single Parameter ----
+# NUMERICAL: Single Parameter ----
 
 # On a given day, 20 1 bedroom apartments were randomly selected on Craiglist Manhattan from apartments listed "by owner". Is the mean of the median a better measure of typical rent in Manhattan ?
 # Data
@@ -89,3 +89,47 @@ x_boot %>% visualise() + shade_ci(endpoints = c(7.02, 7.20))
 # - With a 95% Confidence we REJECT the null Hypothesis
 # - We are 95% Confidence the True mean lies between [,]
 
+
+
+
+
+# NUMERICAL: Two Population ----
+
+# A random sample of taken of nearly 10% of UCLA courses. We want to test whether there is a difference between the average prices of textbooks sold in the bookstore vs. on Amazon.
+
+# Data
+text <- openintro::textbooks
+
+# Confidence Interval: Mean
+t.test(text$diff, conf.level = 0.90)
+t.test(text$diff, conf.level = 0.95)
+t.test(text$diff, conf.level = 0.99)
+# Confidence Interval: Median
+text_diff_median <- text %>% 
+  specify(response = diff) %>% 
+  generate(reps = 15000, type = "bootstrap") %>% 
+  calculate(stat = "median")
+text_diff_median %>% get_confidence_interval(type = 'percentile')
+
+
+
+# The highschool and beyond survey is conducted on high school seniors by the National Center of Education Statistics.
+# We randomly sampled 200 observations from this survey
+
+# Data
+hsb2 <- openintro::hsb2
+hsb2_diff <- hsb2 %>% select(math, science) %>% 
+  mutate(diff = math - science)
+# - median
+hsb_median <- hsb2_diff %>% 
+  summarise(median_diff = median(diff)) %>% 
+  pull()
+# 15,000 Bootstrap medians centered at Null
+hsb_diff_boot <- hsb2_diff %>% 
+  specify(response = diff) %>% 
+  hypothesise(null = "point", med = 0) %>% 
+  generate(reps = 15000, type = "bootstrap") %>% 
+  calculate(stat = "median")
+# pvalue
+hsb_diff_boot %>% visualise(obs_stat = hsb_median, direction = "both")
+hsb_diff_boot %>% get_p_value(obs_stat = hsb_median, direction = "both")
