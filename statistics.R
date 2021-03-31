@@ -2,6 +2,7 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(infer)
+library(broom)
 
 # NUMERICAL: Single Parameter ----
 
@@ -213,7 +214,7 @@ acs_hrs %>%
 
 
 
-# CATEGORICAL: Single Parameter ----
+# CATEGORICAL: Two Population ----
 
 # Is their a difference btw Promotion rates by GENDER ?
 # Data
@@ -311,3 +312,24 @@ p_boot %>% get_confidence_interval(point_estimate = d_hat, type = "se", level = 
 p_boot %>% visualise() + shade_ci(endpoints = c(0.032, 0.767))
 # Conclusion
 # - At the 95% Confidence Level we fail to Reject
+
+# CATEGORICAL: Chi-Square ----
+
+# Political Party by Gender
+# Data
+gss %>% count(sex)
+# EDA
+gss %>% 
+  ggplot(aes(sex, fill = partyid)) +
+  geom_bar(position = "fill")
+# - contingency table
+gss %>% 
+  select(partyid, sex) %>% 
+  table()
+# -obs chi
+# Null Distribution
+gss_null <- gss %>% 
+  specify(partyid ~ sex) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 500, type = "permute") %>% 
+  calculate(stat = "Chisq")

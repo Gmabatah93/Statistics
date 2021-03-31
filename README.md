@@ -1,3 +1,16 @@
+# Descriptive
+### Numerical: Interval | Ratio
+
+Center | Dispersion | Shape | Bivariate
+--- | --- | --- | ---
+Mean | Range | Kurtosis | Covariance
+Median | Variance | Skewness | Correlation
+Mode | Std | |
+
+### Categorical: Nominal | Ordinal
+
+---
+
 # Experimental Design
 ### Principals
 * **Control**: compare treatment to control group
@@ -84,8 +97,15 @@ z-test (Unpaired) | z-test (Paired)
 --- | ---
 <img src="Images/ztestunparied.PNG" width="100"> |
 
-
-
 ## Chi-Squared
+
+> * Helps understand the relationship between two categorical variables
+> * Involves the Frequency of events (counts)
+> * Helps compare what we actually observe with what we expected often times using population data or Theoretical data
+> * Assist in determining the role of random chance variation btw categorical variables
+
+Goodness of Fit | Independence
+--- | ---
+ | <img src="Images/chiind.PNG" width="200">
 
 ## ANOVA
